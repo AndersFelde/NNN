@@ -2,7 +2,6 @@
 <body>
 <script>
 function addRow(rowA){
-    console.log("joe");
     var table = document.getElementById("table");
     var tr = document.createElement("tr");
     var td1 = document.createElement("td");

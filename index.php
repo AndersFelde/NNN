@@ -21,7 +21,6 @@ for ($i=0; $i < count($arr_list)-1; $i++) {
   $i++;
   $dager_siden = date("d") - $arr_list[$i];
   if($dager_siden < 0){
-    
     echo "<td>Om " . $dager_siden * (-1) . " dager</td> </tr>";
   } else {
     echo "<td>" . $dager_siden . " dager</td> </tr>";

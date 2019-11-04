@@ -65,7 +65,10 @@ if(isset($_POST["Edit_all"])){
     function printEdit($signed_in){
         $file = "list.txt";
         $arr_list = explode("-",file_get_contents($file));
+        $arr_list_json = json_decode(file_get_contents("list.json"));
         $count = count($arr_list) - 1;
+        $count = count($arr_list_json)*2;
+        #fordi det er to elementer inni hvert objekt
         echo "<form action='#' method='post'>";
         if($signed_in){
             echo "<br>Fortsatt være logget inn?<input type='checkbox' name='continue_sign_in' checked><br>";
@@ -76,14 +79,24 @@ if(isset($_POST["Edit_all"])){
                 <tr><th>Navn</th><th>Har holdt seg fra:</th></tr>
               </thead>";
         echo "<tbody id='table'>";
-        for ($i=0; $i < ($count); $i++) {
+        /* for ($i=0; $i < ($count); $i++) {
         
             echo "<tr id='$i'> <td><input name='navn$i' value='$arr_list[$i]'></td>";
             $i++;
             echo "<td><input type='number' min='1' max='30' value='$arr_list[$i]' name='dager$i'></td>";
             echo "<td><button type='button' onclick='delRow(" . ($i - 1) . ")'>Slett rad</button></td></tr>";
             
-        }
+        } */
+        $i = 0;
+        foreach ($arr_list_json as $person) {
+            $navn = $person->navn;
+            $dato = $person->dato;
+            echo "<tr id='$i'> <td><input name='navn$i' value='$navn'></td>";
+            $i++;
+            echo "<td><input type='number' min='1' max='30' value='$dato' name='dager$i'></td>";
+            echo "<td><button type='button' onclick='delRow(" . ($i - 1) . ")'>Slett rad</button></td></tr>";
+            $i++;
+          }
         echo "</tbody>";
         echo "</table>";
         echo "</form>";
@@ -112,20 +125,34 @@ if(isset($_POST["Edit_all"])){
 
 }elseif(isset($_POST["endring"])){
     var_dump($_POST);
+    echo "<br>" . json_encode($_POST, JSON_PRETTY_PRINT);
     $file_content = "";
+    $json = array();
+    
     for ($i=0; $i < $_POST["endring"]; $i++) {
+        
         if(empty($_POST["navn$i"]) || empty($_POST["dager" . ($i + 1)])){
             $i++;
         } else {
+            $json_obj = new \stdClass;    
+            $json_obj->navn = $_POST["navn$i"];
             $file_content = $file_content . $_POST["navn$i"] . "-";
-            $i++;
-            $file_content = $file_content . $_POST["dager" . $i] . "-";
 
-            if(file_put_contents("list.txt", $file_content)){
-            }
+            $i++;
+
+            $json_obj->dato = $_POST["dager$i"];
+            $file_content = $file_content . $_POST["dager" . $i] . "-";
+            $json[] = $json_obj;
+            file_put_contents("list.txt", $file_content);
+            
         }
         
     }
+    var_dump($json);
+    echo "<br>";
+    $json = json_encode($json);
+    file_put_contents("list.json", $json);
+    echo "<br> json: ". $json . "<br>";
     if(isset($_SESSION["signed_in"])){
         if(!isset($_POST["continue_sign_in"])){
             unset($_SESSION["signed_in"]);
@@ -133,7 +160,7 @@ if(isset($_POST["Edit_all"])){
 
     }
     echo "du skal ikke være her<br>";
-    header('Location: index.php');
+    #header('Location: index.php');
     echo "<a href='index.php'>index</a>";
 } else {
     header("Location: index.php");

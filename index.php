@@ -7,27 +7,26 @@
 <?php
 session_start();
 
-$file = "list.txt";
-$arr_list = explode("-",file_get_contents($file));
+$json = file_get_contents("list.json");
+$personer = json_decode($json);
+echo count($personer);
 
 echo "<table class='yayeet'>";
 echo "<thead>
         <tr><th>Navn</th><th>Har holdt i:</th></tr>
       </thead>";
 echo "<tbody>";
-for ($i=0; $i < count($arr_list)-1; $i++) {
 
-  echo "<tr> <td>" . $arr_list[$i] . "</td>";
-  $i++;
-  $dager_siden = date("d") - $arr_list[$i];
+foreach ($personer as $person) {
+  echo "<tr> <td>" . $person->navn . "</td>";
+  $dager_siden = date("d") - $person->dato;
   if($dager_siden < 0){
     echo "<td>Om " . $dager_siden * (-1) . " dager</td> </tr>";
   } else {
     echo "<td>" . $dager_siden . " dager</td> </tr>";
   }
-  
-
 }
+
 echo "</tbody>";
 ?>
 </table>

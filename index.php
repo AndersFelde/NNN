@@ -9,7 +9,6 @@ session_start();
 
 $json = file_get_contents("list.json");
 $personer = json_decode($json);
-echo count($personer);
 
 echo "<table class='yayeet'>";
 echo "<thead>

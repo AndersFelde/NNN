@@ -17,13 +17,13 @@ echo "<thead>
 echo "<tbody>";
 
 foreach ($personer as $person) {
-  echo "<tr> <td>" . $person->navn . "</td>";
-  $dager_siden = date("d") - $person->dato;
-  if($dager_siden < 0){
-    echo "<td>Om " . $dager_siden * (-1) . " dager</td> </tr>";
-  } else {
-    echo "<td>" . $dager_siden . " dager</td> </tr>";
-  }
+    echo "<tr> <td>" . $person->navn . "</td>";
+    $dager_siden = date("d") - $person->dato;
+    if ($dager_siden < 0) {
+        echo "<td>Om " . $dager_siden * (-1) . " dager</td> </tr>";
+    } else {
+        echo "<td>" . $dager_siden . " dager</td> </tr>";
+    }
 }
 
 echo "</tbody>";

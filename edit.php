@@ -79,14 +79,6 @@ if(isset($_POST["Edit_all"])){
                 <tr><th>Navn</th><th>Har holdt seg fra:</th></tr>
               </thead>";
         echo "<tbody id='table'>";
-        /* for ($i=0; $i < ($count); $i++) {
-        
-            echo "<tr id='$i'> <td><input name='navn$i' value='$arr_list[$i]'></td>";
-            $i++;
-            echo "<td><input type='number' min='1' max='30' value='$arr_list[$i]' name='dager$i'></td>";
-            echo "<td><button type='button' onclick='delRow(" . ($i - 1) . ")'>Slett rad</button></td></tr>";
-            
-        } */
         $i = 0;
         foreach ($arr_list_json as $person) {
             $navn = $person->navn;

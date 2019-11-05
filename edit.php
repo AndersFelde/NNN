@@ -116,8 +116,6 @@ if(isset($_POST["Edit_all"])){
     unset($_SESSION["login"]);
 
 }elseif(isset($_POST["endring"])){
-    var_dump($_POST);
-    echo "<br>" . json_encode($_POST, JSON_PRETTY_PRINT);
     $file_content = "";
     $json = array();
     
